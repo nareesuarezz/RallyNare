@@ -1,0 +1,12 @@
+package com.nareme.rally.entity.services;
+
+import java.util.List;
+import com.nareme.rally.entity.models.Pilotos;
+
+public interface ICochesService {
+    Pilotos get(long id);
+    List<Pilotos> getAll();
+    void post(Pilotos piloto);
+    void put(Pilotos piloto, long id);
+    void delete(long id);
+}

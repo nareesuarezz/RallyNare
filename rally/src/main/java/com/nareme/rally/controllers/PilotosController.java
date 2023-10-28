@@ -1,0 +1,43 @@
+package com.nareme.rally.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.*;
+import com.nareme.rally.entity.models.Pilotos;
+import com.nareme.rally.entity.services.IPilotosService;
+
+@RestController
+@CrossOrigin(origins = "*")
+public class PilotosController {
+
+    @Autowired
+    IPilotosService pilotosService;
+
+    @GetMapping("/pilotos")
+    public List<Pilotos> getAllPilotos() {
+        return pilotosService.getAll();
+    }
+
+    @GetMapping("/pilotos/{id}")
+    public Pilotos getOne(@PathVariable(value = "id") long id) {
+        return pilotosService.get(id);
+    }
+
+    @PostMapping("/pilotos")
+    public void post(@ModelAttribute @DateTimeFormat(pattern = "yyyy-MM-dd") Pilotos pilotos) {
+        pilotosService.post(pilotos);
+    }
+
+
+    @PutMapping("/pilotos/{id}")
+    public void put(@ModelAttribute Pilotos piloto, @PathVariable(value = "id") long id) {
+        pilotosService.put(piloto, id);
+    }
+
+    @DeleteMapping("/pilotos/{id}")
+    public void delete(@PathVariable(value = "id") long id) {
+        pilotosService.delete(id);
+    }
+}

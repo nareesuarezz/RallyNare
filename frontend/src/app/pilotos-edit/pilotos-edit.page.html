@@ -1,0 +1,73 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Editar Piloto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="home">
+        <ion-icon name="list-circle-outline" (click)="gotoList()"></ion-icon>
+        Lista de Pilotos
+      </ion-tab-button>
+      <ion-tab-button tab="radio">
+        <ion-icon name="add-circle-outline" (click)="gotoAdd()"></ion-icon>
+        Agregar Piloto
+      </ion-tab-button>
+      <ion-tab-button tab="radio">
+        <ion-icon name="home-outline" (click)="gotoHome()"></ion-icon>
+        Volver al inicio
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">coche-add</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <form [formGroup]="ionicForm" (ngSubmit)="editPiloto()" novalidate class="ion-padding form">
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input formControlName="nombre" type="text" aria-label="Nombre" maxlength="255"></ion-input>
+    </ion-item>
+    <div *ngIf="ionicForm.controls?.nombre.touched && ionicForm.controls?.nombre.invalid" class="ion-padding error">
+      <ion-text color="danger">Debes ingresar un nombre.</ion-text>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Apellido</ion-label>
+      <ion-input formControlName="apellido" type="text" aria-label="Apellido" maxlength="255"></ion-input>
+    </ion-item>
+    <div *ngIf="ionicForm.controls?.apellido.touched && ionicForm.controls?.apellido.invalid" class="ion-padding error">
+      <ion-text color="danger">Debes ingresar un apellido.</ion-text>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Fecha de Nacimiento (formato aaaa/mm/dd si no, no funciona)</ion-label>
+      <ion-input formControlName="fechaNacimiento" type="text" aria-label="Fecha de Nacimiento"></ion-input>
+    </ion-item>
+    <div *ngIf="ionicForm.controls?.fechaNacimiento.touched && ionicForm.controls?.fechaNacimiento.invalid" class="ion-padding error">
+      <ion-text color="danger">Debes ingresar una fecha de nacimiento válida.</ion-text>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nacionalidad</ion-label>
+      <ion-input formControlName="nacionalidad" type="text" aria-label="Nacionalidad" maxlength="255"></ion-input>
+    </ion-item>
+    <div *ngIf="ionicForm.controls?.nacionalidad.touched && ionicForm.controls?.nacionalidad.invalid" class="ion-padding error">
+      <ion-text color="danger">Debes ingresar una nacionalidad.</ion-text>
+    </div>
+
+    <ion-item lines="full">
+      <ion-label position="floating">ID del Coche</ion-label>
+      <ion-input formControlName="coche" type="number" aria-label="ID del Coche"></ion-input>
+    </ion-item>
+    <div *ngIf="ionicForm.controls?.coche.touched && ionicForm.controls?.coche.invalid" class="ion-padding error">
+      <ion-text color="danger">Debes ingresar un ID de coche válido.</ion-text>
+    </div>
+
+    <ion-button type="submit" color="danger" expand="full" class="add-button">Editar Piloto</ion-button>
+  </form>
+</ion-content>

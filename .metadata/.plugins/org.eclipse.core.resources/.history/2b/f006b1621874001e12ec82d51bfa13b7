@@ -1,0 +1,15 @@
+package com.nareme.rally.entity.services;
+
+import java.util.List;
+
+import com.nareme.rally.entity.models.LeagueChamps;
+
+public interface ILeagueChampsService {
+public LeagueChamps get(long id);
+public List<LeagueChamps> getAll();
+public void post(LeagueChamps champion);
+public void put(LeagueChamps champion, long id);
+public void delete(long id);
+
+
+}

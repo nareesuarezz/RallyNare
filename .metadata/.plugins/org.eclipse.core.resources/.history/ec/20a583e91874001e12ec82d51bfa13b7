@@ -1,0 +1,49 @@
+package com.nareme.rally.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.nareme.rally.entity.models.LeagueChamps;
+import com.nareme.rally.entity.services.ILeagueChampsService;
+
+@RestController
+@CrossOrigin(origins = "*")
+public class LeagueChampsController {
+
+	@Autowired
+	ILeagueChampsService leagueChampsService;
+	
+	@GetMapping("/leagueChamps")
+	public List<LeagueChamps> getAllChampions(){
+		return leagueChampsService.getAll();
+	}
+	
+	@GetMapping("/leagueChamps/{id}")
+	public LeagueChamps getOne(@PathVariable(value = "id")long id) {
+		return leagueChampsService.get(id);
+	}
+	
+	@PostMapping("/leagueChamps")
+	public void post(LeagueChamps champion) {
+		leagueChampsService.post(champion);
+	}
+	
+	@PutMapping("/leagueChamps/{id}")
+	public void put(LeagueChamps champion, @PathVariable(value = "id") long id) {
+		leagueChampsService.put(champion, id);
+	}
+	
+	@DeleteMapping("/leagueChamps/{id}")
+		public void delete(@PathVariable (value = "id") long id) {
+			leagueChampsService.delete(id);
+		}
+	}
+

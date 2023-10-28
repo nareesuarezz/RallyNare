@@ -1,0 +1,9 @@
+package com.nareme.rally.entity.dao;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.nareme.rally.entity.models.LeagueChamps;
+
+public interface IEscuderiasDao extends CrudRepository<LeagueChamps, Long> {
+
+}

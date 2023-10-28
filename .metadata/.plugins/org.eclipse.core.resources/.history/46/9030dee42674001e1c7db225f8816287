@@ -1,0 +1,42 @@
+package com.nareme.rally.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.nareme.rally.entity.models.Coches;
+import com.nareme.rally.entity.services.ICochesService;
+
+@RestController
+@CrossOrigin(origins = "*")
+public class CochesController {
+
+    @Autowired
+    ICochesService cochesService;
+
+    @GetMapping("/coches")
+    public List<Coches> getAllCoches() {
+        return cochesService.getAll();
+    }
+
+    @GetMapping("/coches/{id}")
+    public Coches getOne(@PathVariable(value = "id") long id) {
+        return cochesService.get(id);
+    }
+
+    @PostMapping("/coches")
+    public void post(@ModelAttribute Coches coche) {
+        cochesService.post(coche);
+    }
+
+    @PutMapping("/coches/{id}")
+    public void put(@RequestBody Coches coche, @PathVariable(value = "id") long id) {
+        cochesService.put(coche, id);
+    }
+
+    @DeleteMapping("/coches/{id}")
+    public void delete(@PathVariable(value = "id") long id) {
+        cochesService.delete(id);
+    }
+}

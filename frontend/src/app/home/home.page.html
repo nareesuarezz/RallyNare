@@ -1,0 +1,53 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Rally Nareme
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Rally Nareme</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+
+  <div class="welcome-text">
+    <h2>Bienvenido a la aplicación de Nareme</h2>
+    <p>A continuación, tienes un menú con todas las opciones disponibles:</p>
+  </div>
+  
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="radio">
+        <ion-icon name="list-circle-outline" (click)="gotoCarList()"></ion-icon>
+        Lista de Coches
+      </ion-tab-button>
+      <ion-tab-button tab="radio">
+        <ion-icon name="add-circle-outline" (click)="gotoCarAdd()"></ion-icon>
+        Agregar Coche
+      </ion-tab-button>
+      <ion-tab-button tab="radio">
+        <ion-icon name="list-circle-outline" (click)="gotoDriverList()"></ion-icon>
+        Lista de Pilotos
+      </ion-tab-button>
+      <ion-tab-button tab="radio">
+        <ion-icon name="add-circle-outline" (click)="gotoDriverAdd()"></ion-icon>
+        Agregar Piloto
+      </ion-tab-button>
+      <ion-tab-button tab="radio">
+        <ion-icon name="list-circle-outline" (click)="gotoTeamList()"></ion-icon>
+        Lista de Escuderias
+      </ion-tab-button>
+      <ion-tab-button tab="radio">
+        <ion-icon name="add-circle-outline" (click)="gotoTeamAdd()"></ion-icon>
+        Agregar Escuderia
+      </ion-tab-button>
+
+    </ion-tab-bar>
+  </ion-tabs>
+  
+</ion-content>

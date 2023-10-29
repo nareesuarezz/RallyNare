@@ -15,37 +15,38 @@ To make this wonderful job work for you you must follow the following steps:
 
 You must create the database in mysql called **rallycars**, then once created you must insert these create table:
 ```sh
-   CREATE TABLE Teams (
+ CREATE TABLE Escuderias (
     ID INT AUTO_INCREMENT PRIMARY KEY,
-    Team_Name VARCHAR(255),
-    Country VARCHAR(255),
-    Year_Fundación INT
+    Nombre_Escuderia VARCHAR(255),
+    Pais VARCHAR(255),
+    Year_Fundacion INT
 );
 
-CREATE TABLE Cars (
+CREATE TABLE Coches (
     ID INT AUTO_INCREMENT PRIMARY KEY,
-    Mark VARCHAR(255),
-    Model VARCHAR(255),
+    Marca VARCHAR(255),
+    Modelo VARCHAR(255),
     Year INT,
-    INT power,
-    Chassis_Number VARCHAR(255),
-    Team_ID INT,
+    Potencia INT,
+    Num_Chasis VARCHAR(255),
+    Escuderia_ID INT,
     FOREIGN KEY (Escuderia_ID) REFERENCES Escuderias(ID)
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
 
-CREATE TABLE Pilots (
+CREATE TABLE Pilotos (
     ID INT AUTO_INCREMENT PRIMARY KEY,
-    Name VARCHAR(255),
-    Last name VARCHAR(255),
-    Date_Birth DATE,
-    VARCHAR Nationality(255),
-    car_ID INT,
-    FOREIGN KEY (Car_ID) REFERENCES Cars(ID)
+    Nombre VARCHAR(255),
+    Apellido VARCHAR(255),
+    Fecha_Nacimiento DATE,
+    Nacionalidad VARCHAR(255),
+    Coche_ID INT,
+    FOREIGN KEY (Coche_ID) REFERENCES Coches(ID)
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
    ```
 
 ## Step 3: Install all dependencies 

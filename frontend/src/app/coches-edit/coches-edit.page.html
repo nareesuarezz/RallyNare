@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Agregar Coche</ion-title>
+    <ion-title>Editar Coche</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -53,10 +53,14 @@
       <ion-input formControlName="numChasis" type="text" aria-label="Num_Chasis" maxlength="255"></ion-input>
     </ion-item>
 
-    <ion-item lines="full">
+  <ion-item lines="full">
       <ion-label position="floating">Escuderia</ion-label>
-      <ion-input formControlName="escuderia" type="text" aria-label="Escuderia_ID" maxlength="255"></ion-input>
-    </ion-item>
+      <ion-select formControlName="escuderia" placeholder="Selecciona una escudería">
+        <ion-select-option *ngFor="let escuderia of listaEscuderias" [value]="escuderia.id">
+          {{ escuderia.nombreEscuderia }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>  
       
     <ion-button type="submit" color="danger" expand="full" class="add-button">Editar Coche</ion-button>
   </form>

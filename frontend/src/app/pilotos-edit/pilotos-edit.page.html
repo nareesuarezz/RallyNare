@@ -61,11 +61,15 @@
     </div>
 
     <ion-item lines="full">
-      <ion-label position="floating">ID del Coche</ion-label>
-      <ion-input formControlName="coche" type="number" aria-label="ID del Coche"></ion-input>
+      <ion-label position="floating">Coche</ion-label>
+      <ion-select formControlName="coche" placeholder="Selecciona un ID de Coche">
+        <ion-select-option *ngFor="let c of listaCoches" [value]="c.id">
+          {{ c.marca }} {{c.modelo}}
+        </ion-select-option>
+      </ion-select>
     </ion-item>
     <div *ngIf="ionicForm.controls?.coche.touched && ionicForm.controls?.coche.invalid" class="ion-padding error">
-      <ion-text color="danger">Debes ingresar un ID de coche válido.</ion-text>
+      <ion-text color="danger">Debes seleccionar un ID de coche válido.</ion-text>
     </div>
 
     <ion-button type="submit" color="danger" expand="full" class="add-button">Editar Piloto</ion-button>

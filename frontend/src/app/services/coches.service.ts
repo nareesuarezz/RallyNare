@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-const endpoint = 'http://localhost:8080/coches'; // Endpoint para la tabla "Coches"
+const endpoint = 'http://localhost:8080/coches'; 
 const httpOptions = {
   headers: new HttpHeaders()
     .set('Content-Type', 'application/x-www-form-urlencoded')

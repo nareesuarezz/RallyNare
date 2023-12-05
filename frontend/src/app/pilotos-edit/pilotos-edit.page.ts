@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { PilotosService } from '../services/pilotos.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-
+import { CochesService } from '../services/coches.service';
 
 @Component({
   selector: 'app-pilotos-edit',
@@ -11,8 +11,18 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./pilotos-edit.page.scss'],
 })
 export class PilotosEditPage implements OnInit {
+  ionicForm: any;
+  selectedPiloto: any;
+  listaCoches: any[] = []; 
 
-  constructor(private PilotosService: PilotosService, private router: Router, public formBuilder: FormBuilder, private route: ActivatedRoute, private toastController: ToastController) {
+  constructor(
+    private pilotosService: PilotosService,
+    private cochesService: CochesService,
+    private router: Router,
+    public formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private toastController: ToastController
+  ) {
     this.ionicForm = this.formBuilder.group({
       nombre: ['', [Validators.required, Validators.minLength(2)]],
       apellido: ['', [Validators.required, Validators.minLength(2)]],
@@ -22,33 +32,41 @@ export class PilotosEditPage implements OnInit {
     });
   }
 
-
-  ionicForm: any;
-  selectedPiloto: any;
-
-
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       const pilotoId = params['pilotoId'];
 
-      this.PilotosService.getPiloto(pilotoId).subscribe((piloto: any) => {
+      this.pilotosService.getPiloto(pilotoId).subscribe((piloto: any) => {
         this.selectedPiloto = piloto;
         this.ionicForm.setValue({
           nombre: piloto.nombre,
           apellido: piloto.apellido,
           fechaNacimiento: piloto.fechaNacimiento,
           nacionalidad: piloto.nacionalidad,
-          coche: piloto.coche.id,
+          coche: piloto.coche.id, 
         });
       });
     });
+
+    this.cochesService.getCoches().subscribe(
+      (coches: any) => {
+        if (Array.isArray(coches)) {
+          this.listaCoches = coches;
+        } else {
+          console.error('La respuesta no es un array:', coches);
+        }
+      },
+      (error) => {
+        console.error('Error al obtener la lista de coches', error);
+      }
+    );
   }
 
   async presentSuccessToast(message: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 2000, // Duración en milisegundos
-      color: 'success', // Color de la notificación (puedes ajustarlo)
+      duration: 2000,
+      color: 'success',
     });
     toast.present();
   }
@@ -56,16 +74,15 @@ export class PilotosEditPage implements OnInit {
   async presentErrorToast(message: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 2000, // Duración en milisegundos
-      color: 'danger', // Color de la notificación (puedes ajustarlo)
+      duration: 2000,
+      color: 'danger',
     });
     toast.present();
   }
 
-
   async editPiloto() {
     if (this.ionicForm.valid && this.selectedPiloto) {
-      const { nombre, apellido, fechaNacimiento, nacionalidad, coche, id } = this.selectedPiloto;
+      const { nombre, apellido, fechaNacimiento, nacionalidad, id } = this.selectedPiloto;
 
       const updatedPiloto = {
         nombre: this.ionicForm.value.nombre,
@@ -73,26 +90,20 @@ export class PilotosEditPage implements OnInit {
         fechaNacimiento: this.ionicForm.value.fechaNacimiento,
         nacionalidad: this.ionicForm.value.nacionalidad,
         coche: this.ionicForm.value.coche,
-
       };
 
-      this.PilotosService.updatePiloto(id, updatedPiloto).subscribe(response => {
-        // Verifica si la edición fue exitosa (puedes ajustar esto según tu API o servicio)
+      this.pilotosService.updatePiloto(id, updatedPiloto).subscribe(response => {
         if (response && typeof response === 'object') {
-          // Aquí considera la respuesta como exitosa
           this.presentErrorToast('Hubo un error al editar el piloto.');
         } else {
           this.presentSuccessToast('El piloto se ha actualizado correctamente.');
         }
-
 
         this.selectedPiloto = null;
         this.ionicForm.reset();
       });
     }
   }
-
-
 
   errorControl() {
     return this.ionicForm.controls;
@@ -118,6 +129,4 @@ export class PilotosEditPage implements OnInit {
   gotoAdd() {
     this.router.navigateByUrl("/pilotos-add");
   }
-
 }
-

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CochesService } from '../services/coches.service';
+import { EscuderiasService } from '../services/escuderias.service';  
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-
 
 @Component({
   selector: 'app-coches-edit',
@@ -11,28 +11,33 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./coches-edit.page.scss'],
 })
 export class CochesEditPage implements OnInit {
+  ionicForm: any;
+  selectedCoche: any;
+  listaEscuderias: any[] = [];  
 
-  constructor(private CochesService: CochesService, private router: Router, public formBuilder: FormBuilder, private route: ActivatedRoute, private toastController: ToastController) {
+  constructor(
+    private cochesService: CochesService,
+    private escuderiasService: EscuderiasService,  
+    private router: Router,
+    private route: ActivatedRoute,
+    private toastController: ToastController,
+    public formBuilder: FormBuilder
+  ) {
     this.ionicForm = this.formBuilder.group({
       marca: ['', [Validators.required, Validators.minLength(2)]],
       modelo: ['', [Validators.required, Validators.minLength(2)]],
       year: ['', [Validators.required, Validators.minLength(2)]],
       potencia: ['', [Validators.required, Validators.minLength(2)]],
       numChasis: ['', [Validators.required, Validators.minLength(2)]],
-      escuderia: ['', [Validators.required, Validators.minLength(2)]],
+      escuderia: ['', [Validators.required]],
     });
   }
 
-
-  ionicForm: any;
-  selectedCoche: any;
-
-
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       const cocheId = params['cocheId'];
 
-      this.CochesService.getCoche(cocheId).subscribe((coche: any) => {
+      this.cochesService.getCoche(cocheId).subscribe((coche: any) => {
         this.selectedCoche = coche;
         this.ionicForm.setValue({
           marca: coche.marca,
@@ -44,13 +49,26 @@ export class CochesEditPage implements OnInit {
         });
       });
     });
+
+    this.escuderiasService.getEscuderias().subscribe(
+      (escuderias: any) => {
+        if (Array.isArray(escuderias)) {
+          this.listaEscuderias = escuderias;
+        } else {
+          console.error('La respuesta no es un array:', escuderias);
+        }
+      },
+      (error) => {
+        console.error('Error al obtener la lista de escuderías', error);
+      }
+    );
   }
 
   async presentSuccessToast(message: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 2000, // Duración en milisegundos
-      color: 'success', // Color de la notificación (puedes ajustarlo)
+      duration: 2000,
+      color: 'success',
     });
     toast.present();
   }
@@ -58,16 +76,15 @@ export class CochesEditPage implements OnInit {
   async presentErrorToast(message: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 2000, // Duración en milisegundos
-      color: 'danger', // Color de la notificación (puedes ajustarlo)
+      duration: 2000,
+      color: 'danger',
     });
     toast.present();
   }
 
-
   async editCoche() {
     if (this.ionicForm.valid && this.selectedCoche) {
-      const { marca, modelo, year, potencia, numChasis, escuderia, id } = this.selectedCoche;
+      const { marca, modelo, year, potencia, numChasis, id } = this.selectedCoche;
 
       const updatedCoche = {
         marca: this.ionicForm.value.marca,
@@ -76,18 +93,14 @@ export class CochesEditPage implements OnInit {
         potencia: this.ionicForm.value.potencia,
         numChasis: this.ionicForm.value.numChasis,
         escuderia: this.ionicForm.value.escuderia,
-
       };
 
-      this.CochesService.updateCoche(id, updatedCoche).subscribe(response => {
-        // Verifica si la edición fue exitosa (puedes ajustar esto según tu API o servicio)
+      this.cochesService.updateCoche(id, updatedCoche).subscribe(response => {
         if (response && typeof response === 'object') {
-          // Aquí considera la respuesta como exitosa
           this.presentErrorToast('Hubo un error al editar el coche.');
         } else {
           this.presentSuccessToast('El coche se ha actualizado correctamente.');
         }
-
 
         this.selectedCoche = null;
         this.ionicForm.reset();
@@ -95,20 +108,9 @@ export class CochesEditPage implements OnInit {
     }
   }
 
-
-
-  errorControl() {
+  get errorControl() {
     return this.ionicForm.controls;
   }
-
-  submitForm = () => {
-    if (this.ionicForm.valid) {
-      console.log(this.ionicForm.value);
-      return false;
-    } else {
-      return console.log('Please provide all the required values!');
-    }
-  };
 
   gotoHome() {
     this.router.navigateByUrl("/home");
@@ -121,6 +123,4 @@ export class CochesEditPage implements OnInit {
   gotoAdd() {
     this.router.navigateByUrl("/coches-add");
   }
-
 }
-

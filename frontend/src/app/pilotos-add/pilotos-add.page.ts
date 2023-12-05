@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { PilotosService } from '../services/pilotos.service';
+import { CochesService } from '../services/coches.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,11 +11,30 @@ import { Router } from '@angular/router';
 })
 export class PilotosAddPage implements OnInit {
 
-  constructor(private pilotosService: PilotosService, private router: Router, public formBuilder: FormBuilder) { }
-
   ionicForm: any;
+  listaCoches: any[] = [];
+
+  constructor(
+    private pilotosService: PilotosService,
+    private cochesService: CochesService,
+    private router: Router,
+    public formBuilder: FormBuilder
+  ) { }
 
   ngOnInit() {
+    this.cochesService.getCoches().subscribe(
+      (coches: any) => {
+        if (Array.isArray(coches)) {
+          this.listaCoches = coches;
+        } else {
+          console.error('La respuesta no es un array:', coches);
+        }
+      },
+      (error) => {
+        console.error('Error al obtener la lista de coches', error);
+      }
+    );
+
     this.ionicForm = this.formBuilder.group({
       nombre: ['', [Validators.required, Validators.minLength(2)]],
       apellido: ['', [Validators.required, Validators.minLength(2)]],
